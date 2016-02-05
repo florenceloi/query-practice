@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/" />
+<title>Homework: Querying with SQLAlchemy</title>
+<link rel="stylesheet" href="http://fellowship.hackbrightacademy.com/tools/homework.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="homework-querying-with-sqlalchemy">
+<h1 class="title">Homework: Querying with SQLAlchemy</h1>
+
+<!-- TODO remove this once we make homework the same was a lectures - joel -->
+<pre class="literal-block">
+<strong>To:</strong> <a class="reference external" href="mailto:jrdev48&#64;ubermelon.co">jrdev48&#64;ubermelon.co</a> &lt;Junior Developer #48&gt;
+<strong>From:</strong> <a class="reference external" href="mailto:mmelitopolski&#64;ubermelon.co">mmelitopolski&#64;ubermelon.co</a> &lt;Mel Melitopolski&gt;
+<strong>Subject:</strong> IMPORTANT Database task!
+<strong>Date:</strong> Mon May 4, 2015 5:59:59 PM PDT
+
+
+Hi team,
+
+Our marketing team has found that people who love melons also
+love movies. We are going to start using our customer's movie
+preferences to try to predict their melon preferences, because
+I heard at a conference that data is powerful!!!!
+
+At the same conference, someone said Object Relational Mappers
+are the new hotness. I used Bing (don't you just <em>love</em> Bing?!)
+to search for &quot;most awesome object relational mapper!!!!!!!&quot;
+and it returned information about &quot;SQLAlchemy&quot;. That sounds
+pretty magical, doesn't it?!!
+
+Attached are some notes from marketing about questions that
+they want answered. Please write those queries in Python
+using SQLAlchemy!!!!
+
+Oh, and, by the way, get ready to refactor the entire codebase
+tomorrow. I hired another consultant.
+
+Mel
+</pre>
+<div class="section" id="setup">
+<h1>Setup</h1>
+<p>First, dowload all the relevant materials from the fellowship website. Then do
+the following:</p>
+<p>Create a virtual environment.</p>
+<pre class="console literal-block">
+$ <span class="cmd">virtualenv env</span>
+</pre>
+<p>Install the requirements.</p>
+<pre class="console literal-block">
+$ <span class="cmd">pip install -r requirements.txt</span>
+</pre>
+<p>Create your empty PostgreSQL database.</p>
+<pre class="console literal-block">
+$ <span class="cmd">createdb ratings</span>
+</pre>
+<p>Load the data into your database using the sql dump file we have provided.</p>
+<pre class="console literal-block">
+$ <span class="cmd">psql ratings &lt; ratings.sql</span>
+</pre>
+</div>
+<div class="section" id="directions">
+<h1>Directions</h1>
+<p>Please write the following queries in python using SQLAlchemy to
+select rows from the database. Your answers should return either
+a single python object or a list of python objects.</p>
+<p>Please test your queries using the interactive mode of your
+python interpreter. In the terminal, run</p>
+<pre class="console literal-block">
+$ <span class="cmd">python -i model.py</span>
+</pre>
+<p>To get you started, try this query, which returns all of the users.</p>
+<pre class="console literal-block">
+&gt;&gt;&gt; <span class="cmd">User.query.all()</span>
+[&lt;User ...&gt;, &lt;User ...&gt;, ...]
+</pre>
+<p>If you should want to inspect the database using SQL, simply run</p>
+<pre class="console literal-block">
+$ <span class="cmd">psql ratings</span>
+</pre>
+<p>from your terminal.</p>
+<div class="section" id="queries-to-answer">
+<h2>Queries to Answer</h2>
+<ol class="arabic simple">
+<li>Find the user with the email <a class="reference external" href="mailto:cats&#64;gmail.com">cats&#64;gmail.com</a>.</li>
+<li>Find any movies with the <em>exact</em> title &quot;Cape Fear&quot;.</li>
+<li>Find all users with the zipcode 90703.</li>
+<li>Find all ratings of with the score of 5.</li>
+<li>Find the rating for the movie whose id is 7, from the user
+whose id is 6.</li>
+</ol>
+<p class="rubric">Bonus hard question:</p>
+<ol class="arabic simple" start="6">
+<li>Find all ratings that are larger than 3.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="the-model-we-re-using">
+<h1>The Model We're Using</h1>
+<p><strong>User</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="86%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Name</th>
+<th class="head">Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>user_id</td>
+<td>integer, primary key</td>
+</tr>
+<tr><td>email</td>
+<td>optional string</td>
+</tr>
+<tr><td>password</td>
+<td>optional string</td>
+</tr>
+<tr><td>age</td>
+<td>optional integer</td>
+</tr>
+<tr><td>zipcode</td>
+<td>optional string (technically, these aren't numeric)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Movie</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="81%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Name</th>
+<th class="head">Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>movie_id</td>
+<td>integer, primary key</td>
+</tr>
+<tr><td>title</td>
+<td>string</td>
+</tr>
+<tr><td>released_at</td>
+<td>timestamp</td>
+</tr>
+<tr><td>imdb_url</td>
+<td>string</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rating</strong></p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="81%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Name</th>
+<th class="head">Type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>rating_id</td>
+<td>integer, primary key</td>
+</tr>
+<tr><td>movie_id</td>
+<td>integer</td>
+</tr>
+<tr><td>user_id</td>
+<td>integer</td>
+</tr>
+<tr><td>score</td>
+<td>integer</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Relationships</strong></p>
+<ul class="simple">
+<li>A user has many ratings</li>
+<li>A rating belongs to a user</li>
+<li>A movie has many ratings</li>
+<li>A rating belongs to a movie</li>
+<li>A user has many movies through ratings</li>
+<li>A movie has many users through ratings</li>
+</ul>
+<p><strong>EXTRA CREDIT:</strong> Read these tips on how to avoid having queries that seriously
+slow down your program <a class="reference external" href="https://pythonguy.wordpress.com/2011/08/17/sqlalchemy-tips-performance/">https://pythonguy.wordpress.com/2011/08/17/sqlalchemy-tips-performance/</a></p>
+</div>
+</div>
+</body>
+</html>
